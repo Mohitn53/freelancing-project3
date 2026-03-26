@@ -1,21 +1,30 @@
 import React from 'react';
 
 const messages = [
-  '🏆 FREE DELIVERY ON ALL ORDERS ABOVE ₹1499',
-  '⚡ NEW ARRIVALS — UP TO 30% OFF ON SPORTS GEAR',
-  '🔥 LIMITED TIME: BUY 2 GET 1 FREE ON ALL JERSEYS',
-  '🎽 EXCLUSIVE COLLECTION — SHOP NOW',
-  '🚴 CYCLING GEAR — NEW DROPS EVERY FRIDAY',
+  '🛒 FREE DELIVERY ON ALL ORDERS ABOVE ₹500',
+  '🥬 FRESH FROM FARMS — UP TO 20% OFF ON ORGANIC VEGGIES',
+  '🍎 WEEKEND SPECIAL: BUY 1 GET 1 FREE ON SELECT FRUITS',
+  '🥦 SUSTAINABLY SOURCED — EAT FRESH, LIVE HEALTHY',
+  '🥛 DAIRY DEALS — NEW STOCK EVERY MORNING',
 ];
 
 const all = [...messages, ...messages].join('   •   ');
 
 const TopNavbar = () => {
   return (
-    <div className="bg-[#0D1B2A] text-white h-[42px] flex items-center overflow-hidden">
-      <div className="flex-1 marquee-wrapper px-2">
-        <div className="marquee-inner text-[11px] font-bold tracking-[0.12em] uppercase text-[#00C896]">
-          {all}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{all}
+    <div className="bg-accent text-white h-10 flex items-center overflow-hidden border-b border-accent-dark/20 shadow-sm">
+      <div className="flex-1 marquee-container px-4">
+        <div className="marquee-content text-[13px] font-semibold tracking-wide flex items-center gap-12">
+          {messages.map((msg, i) => (
+            <span key={i} className="whitespace-nowrap flex items-center gap-2">
+              {msg}
+            </span>
+          ))}
+          {messages.map((msg, i) => (
+            <span key={`dup-${i}`} className="whitespace-nowrap flex items-center gap-2">
+              {msg}
+            </span>
+          ))}
         </div>
       </div>
     </div>
@@ -23,3 +32,4 @@ const TopNavbar = () => {
 };
 
 export default TopNavbar;
+

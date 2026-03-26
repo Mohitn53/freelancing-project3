@@ -1,27 +1,27 @@
-// HomePage.jsx – Sports E-Commerce
+// HomePage.jsx – Grocery E-Commerce
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Truck, RotateCcw, Headphones, ShieldCheck, ArrowRight, Flame } from 'lucide-react';
+import { Truck, RotateCcw, Headphones, ShieldCheck, ArrowRight, Flame, Leaf, ShoppingBasket, Gift, Clock } from 'lucide-react';
 import Hero from '../components/Hero';
 import ProductCard from '../components/ProductCard';
 import PromoBanner from '../components/PromoBanner';
 import { productsApi, categoryApi } from '../services/api';
 
 const FEATURES = [
-  { icon: Truck, title: 'Free Delivery', sub: 'On orders above ₹1499' },
-  { icon: Headphones, title: '24/7 Support', sub: 'Always here to help' },
-  { icon: RotateCcw, title: 'Easy Returns', sub: '30-day hassle-free returns' },
-  { icon: ShieldCheck, title: 'Secure Payment', sub: '100% trusted checkout' },
+  { icon: Truck, title: 'Express Delivery', sub: 'Fresh in 24 hours' },
+  { icon: Clock, title: '24/7 Quality', sub: 'Freshness guaranteed' },
+  { icon: ShoppingBasket, title: 'Farm to Fork', sub: '100% Organic sourcing' },
+  { icon: Gift, title: 'Weekly Deals', sub: 'Save more every day' },
 ];
 
-const SPORT_CATEGORIES = [
-  { label: 'Running', emoji: '🏃', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80' },
-  { label: 'Cricket', emoji: '🏏', img: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=400&q=80' },
-  { label: 'Football', emoji: '⚽', img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=400&q=80' },
-  { label: 'Cycling', emoji: '🚴', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80' },
-  { label: 'Gym', emoji: '💪', img: 'https://images.unsplash.com/photo-1534258936925-c58bed479fcb?auto=format&fit=crop&w=400&q=80' },
-  { label: 'Swimming', emoji: '🏊', img: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=400&q=80' },
+const GROCERY_CATEGORIES = [
+  { label: 'Vegetables', emoji: '🥦', img: 'https://images.unsplash.com/photo-1566385101042-1a000c1267c4?q=80&w=400&auto=format&fit=crop' },
+  { label: 'Fruits', emoji: '🍎', img: 'https://images.unsplash.com/photo-1619566639371-5909d59739a1?q=80&w=400&auto=format&fit=crop' },
+  { label: 'Dairy', emoji: '🥛', img: 'https://images.unsplash.com/photo-1550583724-125581cc25fb?q=80&w=400&auto=format&fit=crop' },
+  { label: 'Bakery', emoji: '🍞', img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400&auto=format&fit=crop' },
+  { label: 'Meat', emoji: '🥩', img: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?q=80&w=400&auto=format&fit=crop' },
+  { label: 'Pantry', emoji: '🍯', img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=400&auto=format&fit=crop' },
 ];
 
 const HomePage = () => {
@@ -39,7 +39,7 @@ const HomePage = () => {
           setCategories(['All', ...res.data.map(c => c.name)]);
         }
       } catch {
-        setCategories(['All', 'Men', 'Women', 'Bags', 'Shoes']);
+        setCategories(['All', 'Vegetables', 'Fruits', 'Dairy', 'Bakery']);
       }
     };
     fetchCategories();
@@ -61,23 +61,23 @@ const HomePage = () => {
   }, [activeTab]);
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="page" exit={{ opacity: 0 }}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="page bg-accent-light/20" exit={{ opacity: 0 }}>
 
       {/* ── 1. Hero ── */}
       <Hero />
 
       {/* ── 2. Feature Strip ── */}
-      <div className="w-full bg-[#0D1B2A] py-5">
-        <div className="max-w-[1440px] mx-auto px-5 md:px-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 divide-x divide-white/10">
+      <div className="w-full bg-primary py-8 rounded-b-[40px] shadow-2xl relative z-10">
+        <div className="max-w-[1320px] mx-auto px-6 md:px-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {FEATURES.map(({ icon: Icon, title, sub }) => (
-              <div key={title} className="flex items-center gap-3 px-4 py-3">
-                <div className="w-9 h-9 rounded-full bg-[#00C896]/15 border border-[#00C896]/30 flex items-center justify-center shrink-0">
-                  <Icon size={16} color="#00C896" strokeWidth={2} />
+              <div key={title} className="flex items-center gap-4 px-4">
+                <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0 border border-white/10">
+                  <Icon size={22} className="text-accent" />
                 </div>
                 <div>
-                  <p className="font-heading font-black text-white text-[13px] uppercase tracking-wide leading-none">{title}</p>
-                  <p className="text-white/40 text-[11px] mt-0.5">{sub}</p>
+                  <p className="font-heading font-black text-white text-[15px] uppercase tracking-wide leading-none">{title}</p>
+                  <p className="text-stone text-[12px] mt-1.5 font-medium">{sub}</p>
                 </div>
               </div>
             ))}
@@ -86,43 +86,45 @@ const HomePage = () => {
       </div>
 
       {/* ── 3. Promo Banners ── */}
-      <div className="pt-14">
+      <div className="pt-24">
         <PromoBanner />
       </div>
 
-      {/* ── 4. Sport Categories ── */}
-      <div className="w-full max-w-[1440px] mx-auto px-5 md:px-10 mb-20">
-        <div className="flex items-center justify-between mb-8">
+      {/* ── 4. Grocery Categories ── */}
+      <div className="w-full max-w-[1320px] mx-auto px-6 md:px-10 mb-24">
+        <div className="flex items-end justify-between mb-12">
           <div>
-            <p className="section-label">Browse by Sport</p>
-            <h2 className="font-heading font-black text-[36px] md:text-[48px] uppercase leading-none text-[#0a0a0a]">
-              Your Sport,<br /><span className="text-[#00C896]">Your Gear.</span>
+            <span className="inline-block bg-accent/15 text-accent font-bold text-[12px] uppercase tracking-widest px-4 py-1.5 rounded-full mb-3">Purely Organic</span>
+            <h2 className="font-heading font-black text-4xl md:text-5xl uppercase leading-none text-primary">
+              Shop by <span className="text-accent">Freshness.</span>
             </h2>
           </div>
           <button
             id="home-view-all-categories-btn"
             onClick={() => navigate('/products')}
-            className="hidden md:flex items-center gap-2 font-heading font-black text-[13px] uppercase tracking-widest text-[#0a0a0a] hover:text-[#00C896] transition-colors cursor-pointer"
+            className="hidden md:flex items-center gap-3 font-heading font-black text-[14px] uppercase tracking-widest text-primary hover:text-accent transition-all cursor-pointer group"
           >
-            All Categories <ArrowRight size={16} />
+            Explore All <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-all"><ArrowRight size={16} /></div>
           </button>
         </div>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-          {SPORT_CATEGORIES.map((cat, i) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+          {GROCERY_CATEGORIES.map((cat, i) => (
             <motion.div
               key={cat.label}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.07 }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
               onClick={() => navigate('/products')}
-              className="relative aspect-square overflow-hidden rounded-xl cursor-pointer group"
+              className="relative aspect-[4/5] overflow-hidden rounded-[32px] cursor-pointer group shadow-md"
             >
-              <img src={cat.img} alt={cat.label} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-              <div className="absolute inset-0 flex flex-col items-center justify-end pb-3 gap-1">
-                <span className="text-2xl">{cat.emoji}</span>
-                <span className="font-heading font-black text-white text-[13px] uppercase tracking-wide">{cat.label}</span>
+              <img src={cat.img} alt={cat.label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent" />
+              <div className="absolute inset-0 flex flex-col items-center justify-end pb-6 gap-2">
+                <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl shadow-xl border border-white/20">
+                  {cat.emoji}
+                </div>
+                <span className="font-heading font-black text-white text-[15px] uppercase tracking-widest mb-1">{cat.label}</span>
               </div>
             </motion.div>
           ))}
@@ -130,29 +132,29 @@ const HomePage = () => {
       </div>
 
       {/* ── 5. Bestsellers Grid ── */}
-      <div className="w-full max-w-[1440px] mx-auto px-5 md:px-10 pb-24">
+      <div className="w-full max-w-[1320px] mx-auto px-6 md:px-10 pb-32">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-6">
-          <div>
-            <p className="section-label">Top Performers</p>
-            <h2 className="font-heading font-black text-[36px] md:text-[48px] uppercase leading-none text-[#0a0a0a] flex items-center gap-3">
-              Bestsellers
-              <Flame size={36} color="#E8271A" strokeWidth={2} />
+        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-12 gap-8">
+          <div className="flex-1">
+            <span className="inline-block bg-berry/15 text-berry font-bold text-[12px] uppercase tracking-widest px-4 py-1.5 rounded-full mb-3">Direct from Farm</span>
+            <h2 className="font-heading font-black text-4xl md:text-5xl uppercase leading-none text-primary flex items-center gap-4">
+              Best Sellers
+              <Flame size={40} className="text-berry animate-bounce" />
             </h2>
           </div>
 
           {/* Category Tabs */}
-          <div className="flex items-center gap-1 bg-[#f5f5f5] rounded p-1 overflow-x-auto max-w-full border border-gray-100">
+          <div className="flex items-center gap-2 bg-white/50 backdrop-blur-md p-2 rounded-2xl border border-white overflow-x-auto max-w-full no-scrollbar shadow-inner">
             {categories.map((cat) => (
               <button
                 key={cat}
                 id={`tab-${cat.toLowerCase().replace(/\s+/g, '-')}`}
                 onClick={() => setActiveTab(cat)}
-                className={`px-5 py-2 text-[12px] font-heading font-black uppercase tracking-widest transition-all outline-none border-none cursor-pointer rounded whitespace-nowrap
+                className={`px-6 py-3 text-[13px] font-heading font-black uppercase tracking-widest transition-all outline-none border-none cursor-pointer rounded-xl whitespace-nowrap
                   ${activeTab === cat
-                    ? 'bg-[#00C896] text-white shadow'
-                    : 'bg-transparent text-gray-500 hover:text-[#0a0a0a]'
+                    ? 'bg-accent text-white shadow-lg'
+                    : 'bg-transparent text-stone hover:text-primary hover:bg-white/50'
                   }`}
               >
                 {cat}
@@ -163,29 +165,30 @@ const HomePage = () => {
           <button
             id="home-show-more-btn"
             onClick={() => navigate('/products')}
-            className="hidden md:flex items-center gap-2 font-heading font-black text-[13px] uppercase tracking-widest text-[#0a0a0a] hover:text-[#00C896] transition-colors cursor-pointer group"
+            className="hidden lg:flex items-center gap-3 font-heading font-black text-[14px] uppercase tracking-widest text-primary hover:text-accent transition-all cursor-pointer group"
           >
-            View All <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            Full Catalog <div className="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-all"><ArrowRight size={16} /></div>
           </button>
         </div>
 
         {/* Grid */}
         {loading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {[1,2,3,4,5,6,7,8].map(i => (
-              <div key={i} className="flex flex-col gap-3">
-                <div className="aspect-[4/5] bg-gray-100 animate-pulse rounded-xl" />
-                <div className="h-3 bg-gray-100 animate-pulse rounded w-3/4" />
-                <div className="h-3 bg-gray-100 animate-pulse rounded w-1/2" />
+              <div key={i} className="flex flex-col gap-4">
+                <div className="aspect-square bg-white animate-pulse rounded-[40px] shadow-sm" />
+                <div className="h-4 bg-white animate-pulse rounded-full w-3/4 mx-auto" />
+                <div className="h-4 bg-white animate-pulse rounded-full w-1/2 mx-auto" />
               </div>
             ))}
           </div>
         ) : products.length === 0 ? (
-          <div className="text-center py-20 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-100">
-            <p className="font-heading font-black text-gray-400 uppercase tracking-widest text-sm">No products in this category</p>
+          <div className="text-center py-24 bg-white/50 rounded-[40px] border-4 border-dashed border-white">
+            <Leaf size={48} className="text-accent/20 mx-auto mb-4" />
+            <p className="font-heading font-black text-primary/40 uppercase tracking-widest text-lg">Harvesting these soon!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
             {products.map(product => (
               <ProductCard
                 key={product.id}
@@ -200,41 +203,41 @@ const HomePage = () => {
         )}
 
         {/* Mobile Show More */}
-        <div className="flex justify-center mt-10 md:hidden">
+        <div className="flex justify-center mt-12 md:hidden">
           <button
             onClick={() => navigate('/products')}
-            className="inline-flex items-center gap-2 bg-[#00C896] text-white font-heading font-black text-[13px] uppercase tracking-widest px-8 py-3.5 rounded hover:bg-[#009b74] transition-all cursor-pointer"
+            className="inline-flex items-center gap-3 bg-accent text-white font-heading font-black text-[14px] uppercase tracking-widest px-10 py-4 rounded-full hover:bg-accent-dark transition-all cursor-pointer shadow-xl"
           >
-            View All Products <ArrowRight size={16} />
+            View All Harvest <ArrowRight size={18} />
           </button>
         </div>
       </div>
 
       {/* ── 6. Explore Featured / CTA Banner ── */}
-      <div className="relative w-full overflow-hidden mb-0">
+      <div className="relative w-full overflow-hidden my-0 py-32 rounded-t-[60px]">
         <img
-          src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=2000&q=80"
-          alt="Explore our featured collection"
-          className="w-full h-[420px] object-cover object-top"
+          src="https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2000&auto=format&fit=crop"
+          alt="Explore our farm collection"
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-[#0D1B2A]/80" />
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+        <div className="absolute inset-0 bg-primary/80 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.8 }}
           >
-            <p className="section-label mb-3">Explore Our Featured</p>
-            <h2 className="font-heading font-black text-white uppercase leading-none mb-6" style={{ fontSize: 'clamp(36px, 6vw, 80px)' }}>
-              UNLEASH YOUR<br /><span className="text-[#00C896]">PERFORMANCE</span>
+            <span className="inline-block bg-accent text-white font-black text-[12px] uppercase tracking-[0.3em] px-6 py-2 rounded-full mb-6 shadow-xl">Hand-Picked for you</span>
+            <h2 className="font-heading font-black text-white uppercase leading-none mb-10" style={{ fontSize: 'clamp(40px, 8vw, 100px)' }}>
+              NATURE'S BEST<br /><span className="text-accent">IN EVERY BOX</span>
             </h2>
             <button
               id="home-explore-featured-btn"
               onClick={() => navigate('/products')}
-              className="inline-flex items-center gap-2 bg-[#00C896] hover:bg-[#009b74] text-white font-heading font-black text-[14px] uppercase tracking-widest px-10 py-4 rounded transition-all hover:shadow-[0_8px_32px_rgba(0,200,150,0.4)] hover:-translate-y-0.5 cursor-pointer"
+              className="inline-flex items-center gap-3 bg-white text-primary hover:bg-accent hover:text-white font-heading font-black text-[16px] uppercase tracking-widest px-12 py-5 rounded-full transition-all hover:shadow-2xl hover:-translate-y-1 cursor-pointer"
             >
-              Shop Now <ArrowRight size={18} />
+              Order Organic Now <ArrowRight size={22} strokeWidth={3} />
             </button>
           </motion.div>
         </div>
@@ -245,3 +248,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+

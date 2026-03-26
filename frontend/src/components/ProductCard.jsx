@@ -1,6 +1,6 @@
-// ProductCard.jsx – Sports E-commerce themed
+// ProductCard.jsx – Grocery E-commerce themed
 import React, { useState } from 'react';
-import { Heart, ShoppingCart, Check, Eye } from 'lucide-react';
+import { Heart, ShoppingBag, Check, Eye, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
@@ -17,7 +17,7 @@ const ProductCard = ({ id, image, name, subtitle, price, isWished: initWished = 
 
   const handleQuickView = (e) => {
     e.stopPropagation();
-    navigate(`/products/${id || 1}`);
+    navigate(`/products/${id}`);
   };
 
   const handleAdd = (e) => {
@@ -45,85 +45,72 @@ const ProductCard = ({ id, image, name, subtitle, price, isWished: initWished = 
 
   return (
     <motion.div
-      className="flex flex-col cursor-pointer group relative"
+      className="flex flex-col cursor-pointer group relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleQuickView}
       initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.5 }}
     >
       {/* ── Image Container ── */}
-      <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-[#f3f4f6] mb-3">
+      <div className="relative aspect-square overflow-hidden bg-accent-light/30">
         <motion.img
           src={image}
           alt={name}
           className="w-full h-full object-cover"
-          animate={{ scale: isHovered ? 1.06 : 1 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
+          animate={{ scale: isHovered ? 1.08 : 1 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
         />
 
-        {/* ── NEW Badge ── */}
-        <div className="absolute top-3 left-3 bg-[#00C896] text-white font-heading font-black text-[10px] uppercase tracking-[0.15em] px-2.5 py-1 rounded">
-          NEW
+        {/* ── FRESH Badge ── */}
+        <div className="absolute top-4 left-4 bg-accent text-white font-heading font-black text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 transform -rotate-1">
+          <Leaf size={10} fill="currentColor" />
+          Fresh Harvest
         </div>
 
         {/* ── Wishlist Button ── */}
         <button
           id={`wishlist-${id}`}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center bg-white/90 backdrop-blur-sm shadow-sm hover:bg-[#E8271A] hover:text-white transition-all z-10 cursor-pointer"
+          className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md shadow-sm transition-all z-10 
+            ${isWished ? 'bg-berry text-white' : 'bg-white/80 text-primary hover:bg-berry hover:text-white'}`}
           onClick={toggleWishlist}
         >
           <Heart
-            size={15}
-            fill={isWished ? '#E8271A' : 'none'}
-            color={isWished ? '#E8271A' : '#0a0a0a'}
-            strokeWidth={2}
+            size={18}
+            fill={isWished ? 'currentColor' : 'none'}
+            strokeWidth={2.5}
           />
         </button>
 
-        {/* ── Hover Action Row ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
-          transition={{ duration: 0.22 }}
-          className="absolute bottom-0 left-0 right-0 flex gap-2 p-3"
-        >
-          {/* Add to Cart */}
-          <button
-            id={`addtocart-${id}`}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded font-heading font-black text-[12px] uppercase tracking-wide transition-all cursor-pointer
-              ${added ? 'bg-green-500 text-white' : 'bg-[#00C896] hover:bg-[#009b74] text-white'}`}
-            onClick={handleAdd}
-          >
-            {added ? <><Check size={14} strokeWidth={3} /> Added!</> : <><ShoppingCart size={14} strokeWidth={2} /> Add to Cart</>}
-          </button>
-
-          {/* Quick View */}
-          <button
-            id={`quickview-${id}`}
-            className="w-10 h-10 flex items-center justify-center rounded bg-white text-[#0a0a0a] hover:bg-[#0a0a0a] hover:text-white transition-all cursor-pointer"
-            onClick={handleQuickView}
-          >
-            <Eye size={16} strokeWidth={2} />
-          </button>
-        </motion.div>
+        {/* ── Actions Layer ── */}
+        <div className={`absolute inset-0 bg-primary/10 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
       </div>
 
       {/* ── Info Row ── */}
-      <div className="flex flex-col gap-1.5 px-1">
-        <span className="text-[11px] text-[#00C896] font-heading font-bold uppercase tracking-widest">{subtitle}</span>
-        <h3 className="font-heading font-black text-[15px] text-[#0a0a0a] uppercase tracking-tight leading-tight group-hover:text-[#00C896] transition-colors m-0">
-          {name}
-        </h3>
-        <div className="flex items-center justify-between">
-          <span className="font-heading font-black text-[16px] text-[#0a0a0a]">{fmt(price)}</span>
-          <div className="flex items-center gap-0.5">
-            {[1,2,3,4,5].map(s => (
-              <div key={s} className={`w-2 h-2 rounded-full ${s <= 4 ? 'bg-[#F5A623]' : 'bg-gray-200'}`} />
-            ))}
+      <div className="flex flex-col p-5 gap-3">
+        <div className="flex flex-col gap-1">
+          <span className="text-[11px] text-accent font-bold uppercase tracking-widest">{subtitle || 'Organic & Farm Fresh'}</span>
+          <h3 className="font-heading font-extrabold text-[18px] text-primary group-hover:text-accent transition-colors leading-tight truncate">
+            {name}
+          </h3>
+        </div>
+        
+        <div className="flex items-center justify-between mt-1">
+          <div className="flex flex-col">
+            <span className="font-heading font-black text-[20px] text-primary">{fmt(price)}</span>
+            <span className="text-[12px] text-stone font-medium line-through opacity-50">₹{(price * 1.2).toFixed(0)}</span>
           </div>
+          
+          <button
+            id={`addtocart-${id}`}
+            className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all shadow-md group/btn
+              ${added ? 'bg-success text-white scale-95' : 'bg-accent hover:bg-accent-dark text-white hover:-translate-y-1 active:translate-y-0'}`}
+            onClick={handleAdd}
+          >
+            {added ? <Check size={20} strokeWidth={3} /> : <ShoppingBag size={20} strokeWidth={2.5} className="group-hover/btn:rotate-12 transition-transform" />}
+          </button>
         </div>
       </div>
     </motion.div>
@@ -131,3 +118,5 @@ const ProductCard = ({ id, image, name, subtitle, price, isWished: initWished = 
 };
 
 export default ProductCard;
+
+

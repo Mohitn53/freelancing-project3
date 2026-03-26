@@ -1,28 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --color-primary: #0a0a0a;
+  --color-primary: #1A2215;
   --color-secondary: #ffffff;
-  --color-accent: #f5f5f5;
-  --color-muted: #6b7280;
-  --color-border: #e5e7eb;
-  --color-error: #E8271A;
-  --color-success: #00C896;
-  --color-sport: #00C896;
-  --color-sport-dark: #009b74;
-  --color-fire: #E8271A;
-  --color-gold: #F5A623;
-  --color-navy: #0D1B2A;
+  --color-accent: #629432;
+  --color-accent-dark: #4D7427;
+  --color-muted: #70776C;
+  --color-border: #E2E8DE;
+  --color-light-bg: #F7F9F5;
+  --color-error: #D9392B;
+  --color-success: #629432;
+  --color-warning: #FFA000;
 
-  --font-body: 'Barlow', sans-serif;
-  --font-heading: 'Barlow Condensed', sans-serif;
+  --font-body: 'Quicksand', sans-serif;
+  --font-heading: 'Outfit', sans-serif;
 
-  --nav-height: 72px;
-  --top-nav-height: 42px;
+  --nav-height: 80px;
+  --top-nav-height: 48px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
 }
 
 * {
@@ -41,12 +43,14 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+  transition: all 0.2s ease;
 }
 
 ul {
@@ -63,17 +67,18 @@ button {
   border: none;
   cursor: pointer;
   font-family: var(--font-body);
+  transition: all 0.2s ease;
 }
 
 .container {
-  max-width: 1440px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 24px;
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 0 20px;
+    padding: 0 16px;
   }
 }
 
@@ -82,194 +87,133 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 32px;
-  border-radius: 4px;
+  padding: 12px 28px;
+  border-radius: var(--radius-full);
   font-weight: 700;
   font-family: var(--font-heading);
-  transition: all 0.25s ease;
-  font-size: 15px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 16px;
+  border: 2px solid transparent;
 }
 
 .btn-primary {
-  background-color: var(--color-sport);
+  background-color: var(--color-accent);
   color: #fff;
 }
 .btn-primary:hover {
-  background-color: var(--color-sport-dark);
+  background-color: var(--color-accent-dark);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,200,150,0.3);
-}
-
-.btn-fire {
-  background-color: var(--color-fire);
-  color: #fff;
-}
-.btn-fire:hover {
-  background-color: #c41e13;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(232,39,26,0.3);
+  box-shadow: 0 10px 20px rgba(98, 148, 50, 0.2);
 }
 
 .btn-secondary {
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
-  border: 2px solid var(--color-primary);
+  background-color: var(--color-light-bg);
+  color: var(--color-accent);
+  border: 2px solid var(--color-accent);
 }
 .btn-secondary:hover {
-  background-color: var(--color-primary);
+  background-color: var(--color-accent);
   color: #fff;
 }
 
 .btn-white {
-  background-color: var(--color-secondary);
+  background-color: #fff;
   color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 .btn-white:hover {
-  background-color: var(--color-sport);
-  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 
-.btn-outline-sport {
-  background: transparent;
-  color: var(--color-sport);
-  border: 2px solid var(--color-sport);
+/* ── Soft Card Layout ── */
+.card-soft {
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s ease;
 }
-.btn-outline-sport:hover {
-  background: var(--color-sport);
-  color: #fff;
-}
-
-/* ── Glass Effect ── */
-.glass {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+.card-soft:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  transform: translateY(-4px);
 }
 
 /* ── Sections ── */
 .section {
-  padding: 80px 0;
+  padding: 100px 0;
 }
 
 /* ── Grid ── */
-.grid {
+.grid-base {
   display: grid;
   gap: 24px;
 }
-.grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
-.grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
-.grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-
-@media (max-width: 1024px) {
-  .grid-cols-4 { grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 768px) {
-  .grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
-  .grid-cols-3 { grid-template-columns: repeat(2, 1fr); }
-  .grid-cols-2 { grid-template-columns: 1fr; }
-}
-@media (max-width: 480px) {
-  .grid-cols-4 { grid-template-columns: 1fr; }
-  .grid-cols-3 { grid-template-columns: 1fr; }
-}
 
 /* ── Custom Scrollbar ── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-sport); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-sport-dark); }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-light-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-accent); border-radius: 99px; border: 2px solid var(--color-light-bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-accent-dark); }
 
 /* ── Flex Utilities ── */
 .flex-center { display: flex; align-items: center; justify-content: center; }
 .flex-between { display: flex; align-items: center; justify-content: space-between; }
-.flex-col { display: flex; flex-direction: column; }
-
-/* ── Page Transitions ── */
-.page-transition-enter { opacity: 0; transform: translateY(10px); }
-.page-transition-enter-active { opacity: 1; transform: translateY(0); transition: opacity 300ms, transform 300ms; }
-.page-transition-exit { opacity: 1; }
-.page-transition-exit-active { opacity: 0; transition: opacity 300ms; }
-
-/* ── Images ── */
-.bg-cover {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
 /* ── Form Inputs ── */
 .input-base {
   width: 100%;
-  padding: 14px 16px;
-  border: 2px solid var(--color-border);
-  border-radius: 4px;
+  padding: 14px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   font-family: var(--font-body);
   outline: none;
-  transition: border-color 0.2s ease;
-  font-size: 15px;
+  transition: all 0.2s ease;
+  font-size: 16px;
+  background-color: #fff;
 }
 .input-base:focus {
-  border-color: var(--color-sport);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4px rgba(98, 148, 50, 0.1);
 }
 
-/* ── Sport Badge Tag ── */
-.sport-badge {
+/* ── Badge Tags ── */
+.badge {
   display: inline-flex;
   align-items: center;
-  background: var(--color-sport);
-  color: #fff;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 2px;
-}
-
-.fire-badge {
-  display: inline-flex;
-  align-items: center;
-  background: var(--color-fire);
-  color: #fff;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 2px;
-}
-
-/* ── Section Label Tag ── */
-.section-label {
-  font-family: var(--font-heading);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-sport);
-  display: inline-block;
-  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+.badge-sale { background: var(--color-error); color: #fff; }
+.badge-new { background: var(--color-success); color: #fff; }
+.badge-warning { background: var(--color-warning); color: #fff; }
+
+/* ── Page Transition Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Gradient Sport Line ── */
-.sport-line {
-  width: 48px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--color-sport), var(--color-neon, #C6FF00));
-  border-radius: 2px;
-  display: block;
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
 }
 
 /* ── Marquee Ticker ── */
-.marquee-wrapper {
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-container {
   overflow: hidden;
   white-space: nowrap;
 }
-.marquee-inner {
+.marquee-content {
   display: inline-block;
-  animation: marquee 22s linear infinite;
+  animation: marquee 30s linear infinite;
 }
+

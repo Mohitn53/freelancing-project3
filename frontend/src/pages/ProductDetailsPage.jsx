@@ -1,13 +1,13 @@
-// ProductDetailsPage.jsx – Sporty Revamp
+// ProductDetailsPage.jsx – Grocery Revamp
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Heart, Minus, Plus, ShoppingBag, Check, Zap, ShieldCheck, Trophy, ArrowLeft, Share2, Layers, Target } from 'lucide-react';
+import { Heart, Minus, Plus, ShoppingBasket, Check, Sparkles, ShieldCheck, Leaf, ArrowLeft, Share2, Layers, ShoppingBag, Truck, BadgeCheck } from 'lucide-react';
 import { productsApi, wishlistApi } from '../services/api';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
-const SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+const WEIGHTS = ['250g', '500g', '1kg', '2kg', '5kg'];
 
 const fmt = (p) => `₹${Number(p).toLocaleString('en-IN')}`;
 
@@ -15,7 +15,7 @@ const ProductDetailsPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [selectedSize, setSelectedSize] = useState('M');
+  const [selectedWeight, setSelectedWeight] = useState('1kg');
   const [qty, setQty] = useState(1);
   const [isWished, setIsWished] = useState(false);
   const [wishLoading, setWishLoading] = useState(false);
@@ -64,53 +64,59 @@ const ProductDetailsPage = () => {
       name: product.name,
       price: product.price,
       image: product.image_url || product.image,
-    }, selectedSize, qty, true);
+    }, selectedWeight, qty, true);
     setCartAdded(true);
     setTimeout(() => setCartAdded(false), 2000);
   };
 
   if (loading) return (
-    <div className="w-full max-w-[1440px] mx-auto px-5 md:px-10 py-32 flex flex-col items-center justify-center font-heading font-black uppercase tracking-widest text-[#00C896]/30 animate-pulse">
-        Scannning Gear Profile...
+    <div className="w-full max-w-[1320px] mx-auto px-6 md:px-10 py-48 flex flex-col items-center justify-center font-heading font-black uppercase tracking-widest text-accent/30 animate-pulse">
+        Unboxing Freshness...
     </div>
   );
 
   if (!product) return (
-    <div className="w-full max-w-[1440px] mx-auto px-5 md:px-10 py-32 text-center">
-      <h1 className="font-heading font-black text-4xl uppercase text-red-500">Gear Not Found</h1>
-      <Link to="/products" className="mt-8 inline-block font-heading font-black uppercase text-[#00C896] underline decoration-2 underline-offset-8 transition-all hover:translate-x-2">Retract to Catalog</Link>
+    <div className="w-full max-w-[1320px] mx-auto px-6 md:px-10 py-48 text-center bg-accent-light/10 rounded-[60px]">
+      <Leaf size={60} className="text-berry mx-auto mb-6" />
+      <h1 className="font-heading font-black text-4xl uppercase text-berry">Item Not Found</h1>
+      <Link to="/products" className="mt-10 inline-block font-heading font-black uppercase text-accent border-b-4 border-accent pb-2 hover:scale-110 transition-transform">Back to All Harvest</Link>
     </div>
   );
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full bg-white">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full min-h-screen bg-accent-light/10">
       
-      {/* Dynamic Background Effect */}
+      {/* Decorative Background Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-        <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-[#00C896]/5 blur-[120px] rounded-full -mr-[20vw] -mt-[10vh]" />
-        <div className="absolute bottom-0 left-0 w-[40vw] h-[40vh] bg-[#0D1B2A]/5 blur-[120px] rounded-full -ml-[10vw] -mb-[10vh]" />
+        <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-accent/5 blur-[120px] rounded-full -mr-[20vw] -mt-[10vh]" />
+        <div className="absolute bottom-0 left-0 w-[40vw] h-[40vh] bg-berry/5 blur-[120px] rounded-full -ml-[10vw] -mb-[10vh]" />
       </div>
 
-      <div className="w-full max-w-[1440px] mx-auto px-5 md:px-10 py-12 lg:py-24">
+      <div className="w-full max-w-[1320px] mx-auto px-6 md:px-10 py-16 lg:py-24">
         
-        {/* Navigation Breadcrumb */}
-        <div className="flex items-center gap-4 mb-12">
-            <button onClick={() => navigate(-1)} className="p-3 bg-gray-50 hover:bg-[#0D1B2A] hover:text-white rounded-xl transition-all border-none cursor-pointer">
-                <ArrowLeft size={18} strokeWidth={3} />
+        {/* Breadcrumbs */}
+        <div className="flex items-center gap-5 mb-16">
+            <button onClick={() => navigate(-1)} className="p-4 bg-white/80 backdrop-blur-md hover:bg-primary hover:text-white rounded-[20px] transition-all shadow-sm group">
+                <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" strokeWidth={3} />
             </button>
-            <span className="font-heading font-black text-[10px] uppercase tracking-widest text-gray-300 transition-colors hover:text-[#00C896] cursor-default">
-                {product?.category} / {product?.name}
-            </span>
+            <div className="flex items-center gap-3 font-heading font-black text-[12px] uppercase tracking-widest text-stone">
+                <Link to="/products" className="hover:text-accent transition-colors">Market</Link>
+                <div className="w-1.5 h-1.5 rounded-full bg-accent/30" />
+                <span className="text-primary">{product?.category}</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-accent/30" />
+                <span className="text-accent">{product?.name}</span>
+            </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 xl:gap-24 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 xl:gap-32 items-start">
           
           {/* ════════════════════════ GALLERY ════════════════════════ */}
-          <div className="space-y-6 relative group">
+          <div className="space-y-8 relative group">
             <motion.div 
-              initial={{ x: -30, opacity: 0 }} 
+              initial={{ x: -40, opacity: 0 }} 
               animate={{ x: 0, opacity: 1 }}
-              className="aspect-[4/5] bg-gray-50 rounded-[3rem] overflow-hidden relative shadow-inner border-2 border-gray-100"
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="aspect-square bg-white rounded-[60px] overflow-hidden relative shadow-2xl border-4 border-white"
             >
               <img
                 src={product?.image_url || product?.image}
@@ -118,157 +124,156 @@ const ProductDetailsPage = () => {
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
               />
               
-              <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end pointer-events-none">
-                 <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow-xl">
-                    <Layers size={24} className="text-white" />
-                 </div>
-                 <div className="bg-[#0D1B2A] text-[#00C896] px-6 py-3 rounded-2xl font-heading font-black uppercase text-[10px] tracking-widest shadow-2xl translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
-                    Elite Specification
-                 </div>
+              <div className="absolute top-10 left-10">
+                <div className="bg-accent/90 backdrop-blur-md text-white px-5 py-2.5 rounded-full font-heading font-black uppercase text-[11px] tracking-widest shadow-xl flex items-center gap-2">
+                    <Leaf size={14} fill="white" /> 100% Organic
+                </div>
               </div>
             </motion.div>
 
-            {/* Micro Gallery / Features (Stylized) */}
-            <div className="grid grid-cols-4 gap-4">
+            {/* Micro Gallery (Stylized) */}
+            <div className="grid grid-cols-4 gap-6">
                 {[1,2,3,4].map(i => (
-                    <div key={i} className="aspect-square bg-gray-50 rounded-2xl border-2 border-transparent hover:border-[#00C896] transition-all cursor-pointer opacity-40 hover:opacity-100 overflow-hidden">
-                        <img src={product?.image_url || product?.image} className="w-full h-full object-cover scale-150 rotate-12" alt="" />
+                    <div key={i} className="aspect-square bg-white rounded-[24px] border-2 border-transparent transition-all cursor-pointer shadow-md hover:shadow-xl hover:scale-105 active:scale-95 overflow-hidden">
+                        <img src={product?.image_url || product?.image} className="w-full h-full object-cover hover:rotate-6 transition-transform" alt="" />
                     </div>
                 ))}
             </div>
           </div>
 
           {/* ════════════════════════ INFO PANEL ════════════════════════ */}
-          <div className="space-y-12">
+          <div className="space-y-16">
             
-            {/* Title & Technicals */}
-            <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                 <span className="bg-[#0D1B2A] text-white px-4 py-1.5 rounded-lg font-heading font-black text-[10px] uppercase tracking-widest flex items-center gap-2">
-                    <Zap size={10} fill="currentColor" /> Pro Performance
+            <div className="space-y-8">
+              <div className="flex items-center gap-4">
+                 <span className="bg-primary text-white px-5 py-2 rounded-xl font-heading font-black text-[11px] uppercase tracking-widest flex items-center gap-2 shadow-lg">
+                    <Sparkles size={12} fill="currentColor" className="text-accent" /> Fresh Guaranteed
                  </span>
-                 <span className="text-[10px] font-heading font-black text-[#00C896] uppercase tracking-widest">
-                    Equipment ID: SZ-{product?.id.slice(0,6).toUpperCase()}
+                 <span className="text-[11px] font-heading font-black text-stone uppercase tracking-widest">
+                    HARVEST ID: EK-{product?.id.slice(0,6).toUpperCase()}
                  </span>
               </div>
               
-              <h1 className="font-heading font-black text-6xl md:text-7xl xl:text-8xl tracking-tighter uppercase leading-[0.85] text-[#0D1B2A]">
+              <h1 className="font-heading font-black text-6xl md:text-7xl xl:text-8xl tracking-tighter uppercase leading-none text-primary">
                 {product?.name.split(' ').map((word, i) => (
-                  <span key={i} className={i % 2 === 0 ? 'block' : 'block text-[#00C896]'}>{word} </span>
+                  <span key={i} className={i % 2 === 0 ? 'block' : 'block text-accent'}>{word} </span>
                 ))}
               </h1>
 
-              <div className="flex items-end gap-6 pt-4">
-                 <p className="font-heading font-black text-5xl text-[#0D1B2A] tracking-tighter leading-none">{fmt(product?.price || 0)}</p>
-                 <div className="flex flex-col gap-1 pb-1">
-                    <p className="text-[9px] font-heading font-black uppercase tracking-widest text-[#00C896]">Valued including GPT</p>
-                    <div className="h-0.5 w-12 bg-[#00C896]" />
+              <div className="flex items-end gap-8 pt-4">
+                 <p className="font-heading font-black text-6xl text-primary tracking-tighter leading-none">{fmt(product?.price || 0)}</p>
+                 <div className="flex flex-col gap-2 pb-2">
+                    <div className="flex items-center gap-2">
+                        <BadgeCheck size={14} className="text-accent" />
+                        <p className="text-[10px] font-heading font-black uppercase tracking-widest text-accent">Tax Included</p>
+                    </div>
+                    <div className="h-1 w-16 bg-accent rounded-full" />
                  </div>
               </div>
             </div>
 
-            {/* Description Card */}
-            <div className="bg-gray-50 p-8 rounded-[2.5rem] border-2 border-gray-100 relative group overflow-hidden transition-all hover:bg-[#0D1B2A]">
-               <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:text-white transition-colors">
-                  <Target size={120} strokeWidth={1} />
+            {/* Description Review */}
+            <div className="bg-white/60 backdrop-blur-xl p-10 rounded-[48px] border-2 border-white relative group overflow-hidden transition-all shadow-xl hover:bg-primary">
+               <div className="absolute -top-10 -right-10 p-10 opacity-5 group-hover:text-white transition-colors">
+                  <ShoppingBag size={150} strokeWidth={1} />
                </div>
-               <h3 className="font-heading font-black text-[10px] uppercase tracking-[0.2em] text-[#00C896] mb-4">Tactical Abstract</h3>
-               <p className="font-heading font-black text-sm uppercase leading-relaxed text-gray-400 group-hover:text-white transition-colors relative z-10">
-                 {product?.description || `High-performance mission gear engineered for the elite ${product?.category} athlete. Feature-set includes advanced thermal regulation, impact stabilization, and ultra-durable composite construction.`}
+               <h3 className="font-heading font-black text-[11px] uppercase tracking-[0.3em] text-accent mb-6 group-hover:text-accent-light transition-colors">Freshness Review</h3>
+               <p className="font-heading font-black text-base uppercase leading-loose text-stone group-hover:text-white/80 transition-colors relative z-10">
+                 {product?.description || `Premium organic harvest sourced directly from local sustainable farms. Hand-picked for quality, peak ripeness, and maximum nutritional value. No artificial preservatives or chemical treatments used.`}
                </p>
             </div>
 
-            {/* Size & Spec Configuration */}
+            {/* Selection Options */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div className="space-y-4">
+                <div className="space-y-5">
                     <div className="flex justify-between items-center">
-                        <label className="text-[10px] font-heading font-black uppercase tracking-widest text-gray-300">Size Matrix</label>
-                        <button className="text-[9px] font-heading font-black uppercase tracking-widest text-[#00C896] hover:underline decoration-2 border-none bg-none cursor-pointer">View Specs</button>
+                        <label className="text-[11px] font-heading font-black uppercase tracking-widest text-stone">Selection Pick</label>
+                        <span className="text-[10px] font-bold text-accent">Fresh In Stock</span>
                     </div>
-                    <div className="grid grid-cols-3 gap-2">
-                        {SIZES.map(size => (
+                    <div className="flex flex-wrap gap-3">
+                        {WEIGHTS.map(weight => (
                             <button
-                                key={size}
-                                onClick={() => setSelectedSize(size)}
-                                className={`h-14 rounded-2xl font-heading font-black text-sm transition-all border-2 cursor-pointer
-                                    ${selectedSize === size
-                                    ? 'bg-[#00C896] text-[#0D1B2A] border-[#00C896] shadow-xl scale-105'
-                                    : 'bg-white border-gray-100 text-gray-300 hover:border-[#00C896]/30'
+                                key={weight}
+                                onClick={() => setSelectedWeight(weight)}
+                                className={`px-6 py-4 rounded-3xl font-heading font-black text-xs transition-all border-2 cursor-pointer
+                                    ${selectedWeight === weight
+                                    ? 'bg-accent text-white border-accent shadow-xl scale-105'
+                                    : 'bg-white border-white text-stone hover:border-accent/30'
                                     }`}
-                            >{size}</button>
+                            >{weight}</button>
                         ))}
                     </div>
                 </div>
 
-                <div className="space-y-4">
-                    <label className="text-[10px] font-heading font-black uppercase tracking-widest text-gray-300">Payload Quantity</label>
-                    <div className="flex items-center justify-between h-14 bg-gray-50 rounded-2xl px-6 border-2 border-gray-100">
-                        <button onClick={() => setQty(q => Math.max(1, q - 1))} className="text-[#0D1B2A] hover:text-[#00C896] transition-colors border-none bg-none cursor-pointer">
-                            <Minus size={20} strokeWidth={3} />
+                <div className="space-y-5">
+                    <label className="text-[11px] font-heading font-black uppercase tracking-widest text-stone">Item Count</label>
+                    <div className="flex items-center justify-between h-16 bg-white rounded-3xl px-8 border-2 border-white shadow-md">
+                        <button onClick={() => setQty(q => Math.max(1, q - 1))} className="text-primary hover:text-berry transition-colors border-none bg-none cursor-pointer">
+                            <Minus size={22} strokeWidth={3} />
                         </button>
-                        <span className="font-heading font-black text-xl">{qty}</span>
-                        <button onClick={() => setQty(q => q + 1)} className="text-[#0D1B2A] hover:text-[#00C896] transition-colors border-none bg-none cursor-pointer">
-                            <Plus size={20} strokeWidth={3} />
+                        <span className="font-heading font-black text-2xl">{qty}</span>
+                        <button onClick={() => setQty(q => q + 1)} className="text-primary hover:text-accent transition-colors border-none bg-none cursor-pointer">
+                            <Plus size={22} strokeWidth={3} />
                         </button>
                     </div>
                 </div>
             </div>
 
-            {/* CTA GRID */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-6">
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-6 pt-10">
                 <button
                     onClick={handleAddToCart}
-                    className={`flex-[2] h-20 rounded-[1.5rem] font-heading font-black uppercase tracking-[0.2em] text-xs transition-all flex items-center justify-center gap-4 shadow-2xl active:scale-95 group border-none cursor-pointer
+                    className={`flex-[2.5] h-20 rounded-full font-heading font-black uppercase tracking-[0.2em] text-sm transition-all flex items-center justify-center gap-5 shadow-2xl active:scale-95 group border-none cursor-pointer
                         ${cartAdded
-                        ? 'bg-white border-4 border-[#00C896] text-[#00C896]'
-                        : 'bg-[#00C896] text-[#0D1B2A]'
+                        ? 'bg-white text-accent ring-4 ring-accent'
+                        : 'bg-accent text-white hover:bg-accent-dark'
                         }`}
                 >
-                    <div className={`p-2 rounded-lg bg-white/20 group-hover:rotate-12 transition-transform ${cartAdded ? 'bg-[#00C896] text-white' : ''}`}>
-                        {cartAdded ? <Check size={20} strokeWidth={4} /> : <ShoppingBag size={20} strokeWidth={3} />}
+                    <div className={`p-3 rounded-2xl bg-white/20 group-hover:rotate-12 transition-transform ${cartAdded ? 'bg-accent text-white' : ''}`}>
+                        {cartAdded ? <Check size={22} strokeWidth={4} /> : <ShoppingBasket size={22} strokeWidth={3} />}
                     </div>
-                    {cartAdded ? 'Secured in Bag' : 'Initialize Shipment'}
+                    {cartAdded ? 'Added to Basket' : 'Add to Basket'}
                 </button>
                 
                 <button
                     onClick={handleWishlist}
-                    className={`flex-1 h-20 rounded-[1.5rem] border-4 font-heading font-black uppercase tracking-widest text-[10px] transition-all flex items-center justify-center gap-3 active:scale-95 cursor-pointer
+                    className={`flex-1 h-20 rounded-full border-4 font-heading font-black uppercase tracking-widest text-[11px] transition-all flex items-center justify-center gap-4 active:scale-95 cursor-pointer shadow-xl
                         ${isWished
-                        ? 'border-[#0D1B2A] bg-[#0D1B2A] text-white'
-                        : 'border-gray-100 bg-white text-gray-300 hover:border-[#00C896] hover:text-[#00C896]'
+                        ? 'border-berry bg-berry text-white'
+                        : 'border-white bg-white text-stone hover:text-berry'
                         }`}
                 >
-                    <Heart size={20} fill={isWished ? 'currentColor' : 'none'} strokeWidth={3} />
-                    {isWished ? 'Saved' : 'Vault'}
+                    <Heart size={24} fill={isWished ? 'currentColor' : 'none'} strokeWidth={3} />
+                    {isWished ? 'Saved' : 'Save'}
                 </button>
                 
-                <button className="h-20 w-20 flex items-center justify-center bg-gray-50 rounded-[1.5rem] border-4 border-transparent hover:border-gray-100 transition-all text-gray-300 hover:text-[#0D1B2A] cursor-pointer">
+                <button className="h-20 w-20 flex items-center justify-center bg-white rounded-full border-2 border-white shadow-xl text-stone hover:text-accent transition-all cursor-pointer">
                     <Share2 size={24} />
                 </button>
             </div>
 
-            {/* Performance Footer */}
-            <div className="grid grid-cols-3 gap-6 pt-12 border-t border-gray-100">
+            {/* Trust Badges */}
+            <div className="grid grid-cols-3 gap-8 pt-16 border-t border-white">
                 <div className="flex flex-col items-center text-center group">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-[#0D1B2A] group-hover:bg-[#00C896]/10 transition-colors">
-                        <ShieldCheck size={24} />
+                    <div className="w-16 h-16 rounded-[24px] bg-white flex items-center justify-center text-accent shadow-md group-hover:bg-accent group-hover:text-white transition-all">
+                        <Truck size={28} />
                     </div>
-                    <span className="text-[10px] font-heading font-black uppercase tracking-widest text-[#0D1B2A] mt-3">Authenticated</span>
-                    <p className="text-[8px] font-heading font-black uppercase text-gray-300 mt-1">SportZone Verified</p>
+                    <span className="text-[11px] font-heading font-black uppercase tracking-widest text-primary mt-4">Fast Ship</span>
+                    <p className="text-[9px] font-bold text-stone mt-2 uppercase">24h Delivery</p>
                 </div>
                  <div className="flex flex-col items-center text-center group">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-[#0D1B2A] group-hover:bg-[#00C896]/10 transition-colors">
-                        <Trophy size={24} />
+                    <div className="w-16 h-16 rounded-[24px] bg-white flex items-center justify-center text-accent shadow-md group-hover:bg-accent group-hover:text-white transition-all">
+                        <Leaf size={28} />
                     </div>
-                    <span className="text-[10px] font-heading font-black uppercase tracking-widest text-[#0D1B2A] mt-3">Elite Tier</span>
-                    <p className="text-[8px] font-heading font-black uppercase text-gray-300 mt-1">Premium Performance</p>
+                    <span className="text-[11px] font-heading font-black uppercase tracking-widest text-primary mt-4">Purely Bio</span>
+                    <p className="text-[9px] font-bold text-stone mt-2 uppercase">Certified Org.</p>
                 </div>
                  <div className="flex flex-col items-center text-center group">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-[#0D1B2A] group-hover:bg-[#00C896]/10 transition-colors">
-                        <ShoppingBag size={24} />
+                    <div className="w-16 h-16 rounded-[24px] bg-white flex items-center justify-center text-accent shadow-md group-hover:bg-accent group-hover:text-white transition-all">
+                        <ShieldCheck size={28} />
                     </div>
-                    <span className="text-[10px] font-heading font-black uppercase tracking-widest text-[#0D1B2A] mt-3">Global Dist.</span>
-                    <p className="text-[8px] font-heading font-black uppercase text-gray-300 mt-1">Locked Fulfillment</p>
+                    <span className="text-[11px] font-heading font-black uppercase tracking-widest text-primary mt-4">Secure Pay</span>
+                    <p className="text-[9px] font-bold text-stone mt-2 uppercase">100% Trusted</p>
                 </div>
             </div>
 
@@ -280,3 +285,4 @@ const ProductDetailsPage = () => {
 };
 
 export default ProductDetailsPage;
+

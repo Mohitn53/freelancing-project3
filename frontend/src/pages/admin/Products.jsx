@@ -1,9 +1,9 @@
-// src/pages/admin/Products.jsx – Sporty Revamp
+// src/pages/admin/Products.jsx – Ekomart Harvest Manager
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, Search, Filter, MoreHorizontal, Edit2, Trash2, ExternalLink, 
-  ChevronLeft, ChevronRight, Package, AlertCircle, Zap, ShieldCheck 
+  ChevronLeft, ChevronRight, Package, AlertCircle, Leaf, ShieldCheck, Sprout, ShoppingBasket
 } from 'lucide-react';
 import { productsApi, categoryApi } from '../../services/api';
 
@@ -20,7 +20,7 @@ const AdminProducts = () => {
   const [categories, setCategories] = useState([]);
   
   const [formData, setFormData] = useState({
-    name: '', category: 'Cricket', price: '', stock: '', image_url: '', description: ''
+    name: '', category: 'Vegetables', price: '', stock: '', image_url: '', description: ''
   });
 
   useEffect(() => {
@@ -37,14 +37,14 @@ const AdminProducts = () => {
     if (editProduct) {
       setFormData({
         name: editProduct.name || '',
-        category: editProduct.category || 'Cricket',
+        category: editProduct.category || 'Vegetables',
         price: editProduct.price || '',
         stock: editProduct.stock || '',
         image_url: editProduct.image_url || '',
         description: editProduct.description || ''
       });
     } else {
-      setFormData({ name: '', category: 'Cricket', price: '', stock: '', image_url: '', description: '' });
+      setFormData({ name: '', category: 'Vegetables', price: '', stock: '', image_url: '', description: '' });
     }
   }, [editProduct, showModal]);
 
@@ -63,7 +63,7 @@ const AdminProducts = () => {
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
   const handleDelete = async (id) => {
-    if (window.confirm('Purge this gear from the catalog?')) {
+    if (window.confirm('Purge this harvest entry from the catalog?')) {
       try {
         await productsApi.delete(id);
         fetchProducts();
@@ -88,121 +88,125 @@ const AdminProducts = () => {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-700">
+    <div className="space-y-12 animate-in fade-in duration-1000">
       {/* Header Row */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b-4 border-[#0D1B2A] pb-8">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b-8 border-primary pb-12">
         <div>
-          <h1 className="font-heading font-black text-5xl tracking-tighter uppercase leading-none">Gear <span className="text-[#00C896]">Command</span></h1>
-          <p className="text-gray-400 font-heading font-black uppercase tracking-[0.2em] text-[10px] mt-3">Elite Equipment Management Portal</p>
+          <div className="flex items-center gap-3 mb-4">
+             <div className="w-10 h-1 h-px bg-accent rounded-full" />
+             <span className="text-[10px] font-heading font-black text-accent uppercase tracking-[0.4em]">Inventory Node</span>
+          </div>
+          <h1 className="font-heading font-black text-6xl tracking-tighter uppercase leading-none text-primary">Harvest <span className="text-accent">Manager</span></h1>
+          <p className="text-stone/30 font-heading font-black uppercase tracking-[0.3em] text-xs mt-4">Global Produce & Stock Authorization</p>
         </div>
         <button 
           onClick={() => { setEditProduct(null); setShowModal(true); }}
-          className="bg-[#00C896] text-[#0D1B2A] px-10 py-5 rounded-2xl font-heading font-black uppercase tracking-widest text-xs shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2 group"
+          className="bg-accent text-white px-12 py-6 rounded-full font-heading font-black uppercase tracking-[0.3em] text-xs shadow-2xl hover:bg-primary transition-all flex items-center justify-center gap-4 group active:scale-95"
         >
-          <Plus size={18} strokeWidth={3} className="group-hover:rotate-90 transition-transform" /> New Release
+          <Plus size={20} strokeWidth={3} className="group-hover:rotate-90 transition-transform duration-500" /> New Harvest Entry
         </button>
       </div>
 
       {/* Control Strip */}
-      <div className="flex flex-col lg:flex-row gap-4 items-stretch">
+      <div className="flex flex-col lg:flex-row gap-6 items-stretch">
         <div className="relative flex-1 group">
-          <Search size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-[#00C896] transition-colors" />
+          <Search size={22} className="absolute left-6 top-1/2 -translate-y-1/2 text-primary/20 group-focus-within:text-accent transition-colors" />
           <input 
             type="text" 
-            placeholder="Scan catalog by name, UID, or category..."
-            className="w-full bg-white border-2 border-gray-100 rounded-2xl py-5 pl-14 pr-6 font-heading font-black uppercase text-xs tracking-widest outline-none focus:border-[#00C896] transition-all shadow-sm"
+            placeholder="Search catalog by name, ID, or taxonomy..."
+            className="w-full bg-white border-4 border-stone-50 rounded-[2rem] py-6 pl-16 pr-8 font-heading font-black uppercase text-xs tracking-widest outline-none focus:border-accent/30 transition-all shadow-xl shadow-stone-100/50"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
-          <button className="flex items-center gap-3 px-8 bg-[#0D1B2A] text-[#00C896] rounded-2xl font-heading font-black uppercase tracking-widest text-[10px] hover:bg-[#1a2d42] transition-all">
-            <Filter size={14} /> Filter
+        <div className="flex gap-4">
+          <button className="flex items-center gap-4 px-10 bg-primary text-white rounded-[1.5rem] font-heading font-black uppercase tracking-widest text-xs hover:bg-accent transition-all shadow-xl active:scale-95">
+            <Filter size={18} /> Filter
           </button>
-          <button className="flex items-center gap-3 px-8 bg-white border-2 border-gray-100 text-gray-400 rounded-2xl font-heading font-black uppercase tracking-widest text-[10px] hover:border-[#00C896] hover:text-[#00C896] transition-all">
-            Export <Zap size={14} fill="currentColor" />
+          <button className="flex items-center gap-4 px-10 bg-white border-4 border-stone-50 text-stone/30 rounded-[1.5rem] font-heading font-black uppercase tracking-widest text-xs hover:border-accent/30 hover:text-accent transition-all shadow-lg active:scale-95">
+            Export <Leaf size={18} className="text-accent" />
           </button>
         </div>
       </div>
 
       {/* Grid Display */}
-      <div className="bg-white rounded-[2.5rem] border-2 border-gray-100 shadow-sm overflow-hidden flex flex-col">
+      <div className="bg-white rounded-[4rem] border-8 border-stone-50 shadow-2xl overflow-hidden flex flex-col">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-[#0D1B2A] text-white">
-                <th className="px-8 py-6 font-heading font-black uppercase tracking-widest text-[10px] text-left">Equipment</th>
-                <th className="px-8 py-6 font-heading font-black uppercase tracking-widest text-[10px] text-left">Classification</th>
-                <th className="px-8 py-6 font-heading font-black uppercase tracking-widest text-[10px] text-left">Valuation</th>
-                <th className="px-8 py-6 font-heading font-black uppercase tracking-widest text-[10px] text-left">Storage</th>
-                <th className="px-8 py-6 font-heading font-black uppercase tracking-widest text-[10px] text-left">Status</th>
-                <th className="px-8 py-6 font-heading font-black uppercase tracking-widest text-[10px] text-right">Actions</th>
+              <tr className="bg-primary text-white">
+                <th className="px-10 py-8 font-heading font-black uppercase tracking-[0.3em] text-[10px] text-left">Produce Entry</th>
+                <th className="px-10 py-8 font-heading font-black uppercase tracking-[0.3em] text-[10px] text-left">Taxonomy</th>
+                <th className="px-10 py-8 font-heading font-black uppercase tracking-[0.3em] text-[10px] text-left">Valuation</th>
+                <th className="px-10 py-8 font-heading font-black uppercase tracking-[0.3em] text-[10px] text-left">Vault Stock</th>
+                <th className="px-10 py-8 font-heading font-black uppercase tracking-[0.3em] text-[10px] text-left">Viability</th>
+                <th className="px-10 py-8 font-heading font-black uppercase tracking-[0.3em] text-[10px] text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y-4 divide-stone-50">
               {loading ? (
                 [1,2,3,4,5].map(i => (
                   <tr key={i} className="animate-pulse">
-                    <td colSpan="6" className="px-8 py-10"><div className="h-4 bg-gray-50 rounded w-full"></div></td>
+                    <td colSpan="6" className="px-10 py-12 text-center text-stone-200 uppercase font-black text-[10px] tracking-widest">Scanning Network Layer...</td>
                   </tr>
                 ))
               ) : products.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="py-24 text-center">
-                    <Package size={64} strokeWidth={1} className="mx-auto text-gray-100 mb-4" />
-                    <p className="font-heading font-black uppercase tracking-widest text-xs text-gray-300">No equipment registered in perimeter</p>
+                  <td colSpan="6" className="py-40 text-center">
+                    <ShoppingBasket size={80} strokeWidth={1} className="mx-auto text-stone-100 mb-8" />
+                    <p className="font-heading font-black uppercase tracking-[0.5em] text-xs text-stone/20">Zero harvest entries detected in local node</p>
                   </td>
                 </tr>
               ) : (
                 products.map((p) => (
-                  <tr key={p.id} className="group hover:bg-gray-50/50 transition-all">
-                    <td className="px-8 py-6">
-                      <div className="flex items-center gap-5">
-                        <div className="w-16 h-16 rounded-[1.25rem] bg-gray-100 overflow-hidden shrink-0 border-2 border-gray-50 group-hover:rotate-2 transition-transform">
+                  <tr key={p.id} className="group hover:bg-stone-50/50 transition-all duration-500">
+                    <td className="px-10 py-8">
+                      <div className="flex items-center gap-6">
+                        <div className="w-20 h-20 rounded-[2rem] bg-stone-100 overflow-hidden shrink-0 border-4 border-white group-hover:rotate-6 transition-transform duration-500 shadow-lg shadow-stone-200">
                           <img src={p.image_url} alt="" className="w-full h-full object-cover" />
                         </div>
                         <div>
-                          <p className="font-heading font-black text-sm uppercase tracking-tight text-[#0D1B2A] group-hover:text-[#00C896] transition-colors">{p.name}</p>
-                          <p className="text-[9px] text-gray-300 font-heading font-black uppercase tracking-widest mt-1">UID: {p.id.slice(0,8)}</p>
+                          <p className="font-heading font-black text-base uppercase tracking-tight text-primary group-hover:text-accent transition-colors mb-1">{p.name}</p>
+                          <p className="text-[10px] text-stone/20 font-heading font-black uppercase tracking-widest">ID: {p.id.slice(0,10)}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-8 py-6">
-                      <span className="px-4 py-1.5 bg-[#0D1B2A]/5 rounded-full text-[9px] font-heading font-black uppercase tracking-widest text-gray-400">
+                    <td className="px-10 py-8">
+                      <span className="px-5 py-2 bg-accent/10 rounded-full text-[10px] font-heading font-black uppercase tracking-widest text-accent border border-accent/20 shadow-inner">
                         {p.category}
                       </span>
                     </td>
-                    <td className="px-8 py-6 font-heading font-black text-sm text-[#0D1B2A]">
+                    <td className="px-10 py-8 font-heading font-black text-base text-primary">
                       {fmt(p.price)}
                     </td>
-                    <td className="px-8 py-6">
-                      <div className="flex flex-col gap-2">
-                        <span className={`text-[10px] font-heading font-black uppercase tracking-widest ${p.stock < 10 ? 'text-red-500' : 'text-gray-400'}`}>
+                    <td className="px-10 py-8">
+                      <div className="flex flex-col gap-3">
+                        <span className={`text-[10px] font-heading font-black uppercase tracking-widest ${p.stock < 10 ? 'text-berry' : 'text-primary/40'}`}>
                           {p.stock} UNITS
                         </span>
-                        <div className="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                          <div className={`h-full ${p.stock < 10 ? 'bg-red-500' : 'bg-[#00C896]'}`} style={{ width: `${Math.min(100, (p.stock / 50) * 100)}%` }}></div>
+                        <div className="w-32 h-2.5 bg-stone-100 rounded-full overflow-hidden border border-white">
+                          <div className={`h-full transition-all duration-1000 ${p.stock < 10 ? 'bg-berry' : 'bg-accent shadow-[0_0_10px_rgba(98,148,50,0.5)]'}`} style={{ width: `${Math.min(100, (p.stock / 50) * 100)}%` }}></div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-8 py-6">
-                      <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border ${p.stock > 0 ? 'bg-[#00C896]/10 border-[#00C896]/20 text-[#00C896]' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}>
-                        <div className={`w-1.5 h-1.5 rounded-full ${p.stock > 0 ? 'bg-[#00C896]' : 'bg-red-500'} animate-pulse`}></div>
-                        <span className="text-[9px] font-heading font-black uppercase tracking-widest">
-                          {p.stock > 0 ? 'Active' : 'Missing'}
+                    <td className="px-10 py-8">
+                      <div className={`inline-flex items-center gap-3 px-5 py-2 rounded-full border-2 ${p.stock > 0 ? 'bg-accent/5 border-accent/10 text-accent' : 'bg-berry/5 border-berry/10 text-berry'}`}>
+                        <div className={`w-2 h-2 rounded-full ${p.stock > 0 ? 'bg-accent shadow-[0_0_8px_rgba(98,148,50,0.8)]' : 'bg-berry'} animate-pulse`}></div>
+                        <span className="text-[10px] font-heading font-black uppercase tracking-widest">
+                          {p.stock > 0 ? 'VIABLE' : 'DEPLETED'}
                         </span>
                       </div>
                     </td>
-                    <td className="px-8 py-6 text-right">
-                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all scale-95 group-hover:scale-100">
-                        <button onClick={() => { setEditProduct(p); setShowModal(true); }} className="p-3 bg-white text-gray-400 hover:text-[#00C896] hover:shadow-lg rounded-xl transition-all border border-gray-100 cursor-pointer">
-                          <Edit2 size={16} />
+                    <td className="px-10 py-8 text-right">
+                      <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100 translate-x-10 group-hover:translate-x-0 duration-500">
+                        <button onClick={() => { setEditProduct(p); setShowModal(true); }} className="p-4 bg-white text-primary/20 hover:text-accent hover:shadow-2xl rounded-2xl transition-all border-4 border-stone-50 cursor-pointer shadow-lg active:scale-90">
+                          <Edit2 size={18} strokeWidth={3} />
                         </button>
-                        <button onClick={() => handleDelete(p.id)} className="p-3 bg-white text-gray-400 hover:text-red-500 hover:shadow-lg rounded-xl transition-all border border-gray-100 cursor-pointer">
-                          <Trash2 size={16} />
+                        <button onClick={() => handleDelete(p.id)} className="p-4 bg-white text-primary/20 hover:text-berry hover:shadow-2xl rounded-2xl transition-all border-4 border-stone-50 cursor-pointer shadow-lg active:scale-90">
+                          <Trash2 size={18} strokeWidth={3} />
                         </button>
                       </div>
-                      <MoreHorizontal size={18} className="text-gray-200 group-hover:hidden" />
+                      <MoreHorizontal size={24} className="text-stone-100 group-hover:hidden transition-opacity" />
                     </td>
                   </tr>
                 ))
@@ -212,78 +216,81 @@ const AdminProducts = () => {
         </div>
 
         {/* Action Bar Footer */}
-        <div className="px-8 py-8 border-t border-gray-100 flex items-center justify-between bg-gray-50/50">
-          <p className="text-[10px] font-heading font-black text-gray-300 uppercase tracking-widest">
-            Tracking <span className="text-[#0D1B2A]">{products.length}</span> Active Items in Grid
+        <div className="px-12 py-10 border-t-8 border-stone-100 flex items-center justify-between bg-stone-50/30">
+          <p className="text-[11px] font-heading font-black text-primary/20 uppercase tracking-[0.4em]">
+            Syncing <span className="text-primary">{products.length}</span> Active Harvests In Network
           </p>
-          <div className="flex items-center gap-3">
-            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="p-3 rounded-xl border-2 border-gray-200 text-gray-400 hover:border-[#00C896] hover:text-[#00C896] transition-all disabled:opacity-20 bg-white">
-              <ChevronLeft size={16} strokeWidth={3} />
+          <div className="flex items-center gap-5">
+            <button disabled={page === 1} onClick={() => setPage(p => p - 1)} className="p-4 rounded-2xl border-4 border-stone-100 text-stone-200 hover:border-accent hover:text-accent transition-all disabled:opacity-20 bg-white shadow-lg active:scale-95">
+              <ChevronLeft size={20} strokeWidth={4} />
             </button>
-            <div className="min-w-[40px] h-10 flex items-center justify-center bg-[#0D1B2A] text-[#00C896] rounded-xl text-xs font-heading font-black shadow-lg">
+            <div className="min-w-[50px] h-12 flex items-center justify-center bg-primary text-white rounded-2xl text-sm font-heading font-black shadow-2xl rotate-3">
               {page}
             </div>
-            <button disabled={products.length < 10} onClick={() => setPage(p => p + 1)} className="p-3 rounded-xl border-2 border-gray-200 text-gray-400 hover:border-[#00C896] hover:text-[#00C896] transition-all disabled:opacity-20 bg-white">
-              <ChevronRight size={16} strokeWidth={3} />
+            <button disabled={products.length < 10} onClick={() => setPage(p => p + 1)} className="p-4 rounded-2xl border-4 border-stone-100 text-stone-200 hover:border-accent hover:text-accent transition-all disabled:opacity-20 bg-white shadow-lg active:scale-95">
+              <ChevronRight size={20} strokeWidth={4} />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Modal Overlay Upgrade */}
+      {/* Modal Overlay */}
       <AnimatePresence>
         {showModal && (
-          <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowModal(false)} className="absolute inset-0 bg-[#0D1B2A]/60 backdrop-blur-md" />
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-8">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowModal(false)} className="absolute inset-0 bg-primary/80 backdrop-blur-xl" />
             
-            <motion.div initial={{ opacity: 0, scale: 0.9, y: 30 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 30 }}
-              className="relative w-full max-w-2xl bg-white rounded-[3rem] shadow-2xl overflow-hidden p-10 md:p-14 border-b-8 border-[#00C896]"
+            <motion.div initial={{ opacity: 0, scale: 0.9, y: 50 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.9, y: 50 }}
+              className="relative w-full max-w-2xl bg-white rounded-[4rem] shadow-2xl overflow-hidden p-12 md:p-16 border-t-[12px] border-accent"
             >
-              <h2 className="font-heading font-black text-4xl uppercase tracking-tighter mb-10 flex items-center gap-3">
-                {editProduct ? 'Modify Release' : 'Initiate Release'} <ShieldCheck size={28} className="text-[#00C896]" />
-              </h2>
+              <div className="flex items-center gap-4 mb-10">
+                 <Sprout size={40} className="text-accent" />
+                 <h2 className="font-heading font-black text-5xl text-primary uppercase tracking-tighter">
+                   {editProduct ? 'Modify Harvest' : 'New Harvest'}
+                 </h2>
+              </div>
               
-              <form onSubmit={handleSave} className="space-y-8">
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-heading font-black uppercase tracking-widest text-gray-300 pl-1">Gear Designation</label>
-                    <input type="text" required placeholder="Design name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="w-full bg-gray-50 border-2 border-transparent focus:border-[#00C896] outline-none px-6 py-4 rounded-xl font-heading font-black uppercase text-xs" />
+              <form onSubmit={handleSave} className="space-y-10">
+                <div className="grid grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[11px] font-heading font-black uppercase tracking-widest text-primary/30 pl-2">Product Name</label>
+                    <input type="text" required placeholder="ORANGE BLOOM" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="w-full bg-stone-50 border-4 border-transparent focus:border-accent/30 outline-none px-8 py-5 rounded-[2rem] font-heading font-black uppercase text-xs shadow-inner" />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-heading font-black uppercase tracking-widest text-gray-300 pl-1">Classification</label>
+                  <div className="space-y-3">
+                    <label className="text-[11px] font-heading font-black uppercase tracking-widest text-primary/30 pl-2">Classification</label>
                     <select value={formData.category} onChange={(e) => setFormData({...formData, category: e.target.value})}
-                      className="w-full bg-gray-50 border-2 border-transparent focus:border-[#00C896] outline-none px-6 py-4 rounded-xl font-heading font-black uppercase text-xs">
+                      className="w-full bg-stone-50 border-4 border-transparent focus:border-accent/30 outline-none px-8 py-5 rounded-[2rem] font-heading font-black uppercase text-xs shadow-inner appearance-none cursor-pointer">
                       {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-                      {categories.length === 0 && <option>Cricket</option>}
+                      {categories.length === 0 && <option>Vegetables</option>}
                     </select>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-6 text-white/50">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-heading font-black uppercase tracking-widest text-gray-300 pl-1">Metric Valuation (INR)</label>
+                <div className="grid grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-[11px] font-heading font-black uppercase tracking-widest text-primary/30 pl-2">Valuation (INR)</label>
                     <input type="number" required placeholder="0.00" value={formData.price} onChange={(e) => setFormData({...formData, price: e.target.value})}
-                      className="w-full bg-gray-50 border-2 border-transparent focus:border-[#00C896] outline-none px-6 py-4 rounded-xl font-heading font-black text-xs text-[#0D1B2A]" />
+                      className="w-full bg-stone-50 border-4 border-transparent focus:border-accent/30 outline-none px-8 py-5 rounded-[2rem] font-heading font-black text-sm text-primary shadow-inner" />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-heading font-black uppercase tracking-widest text-gray-300 pl-1">Storage Quota</label>
-                    <input type="number" required placeholder="Quantity" value={formData.stock} onChange={(e) => setFormData({...formData, stock: e.target.value})}
-                      className="w-full bg-gray-50 border-2 border-transparent focus:border-[#00C896] outline-none px-6 py-4 rounded-xl font-heading font-black text-xs text-[#0D1B2A]" />
+                  <div className="space-y-3">
+                    <label className="text-[11px] font-heading font-black uppercase tracking-widest text-primary/30 pl-2">Vault Quantity</label>
+                    <input type="number" required placeholder="QTY" value={formData.stock} onChange={(e) => setFormData({...formData, stock: e.target.value})}
+                      className="w-full bg-stone-50 border-4 border-transparent focus:border-accent/30 outline-none px-8 py-5 rounded-[2rem] font-heading font-black text-sm text-primary shadow-inner" />
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-[10px] font-heading font-black uppercase tracking-widest text-gray-300 pl-1">Visual Protocol (URL)</label>
-                  <input type="text" required placeholder="https://..." value={formData.image_url} onChange={(e) => setFormData({...formData, image_url: e.target.value})}
-                    className="w-full bg-gray-50 border-2 border-transparent focus:border-[#00C896] outline-none px-6 py-4 rounded-xl font-heading font-black text-xs text-[#0D1B2A]" />
+                <div className="space-y-3">
+                  <label className="text-[11px] font-heading font-black uppercase tracking-widest text-primary/30 pl-2">Visual DNA (Image URL)</label>
+                  <input type="text" required placeholder="HTTP://IMAGE.CDN/..." value={formData.image_url} onChange={(e) => setFormData({...formData, image_url: e.target.value})}
+                    className="w-full bg-stone-50 border-4 border-transparent focus:border-accent/30 outline-none px-8 py-5 rounded-[2rem] font-heading font-black text-xs text-primary shadow-inner" />
                 </div>
 
-                <div className="pt-8 flex gap-4">
-                  <button type="submit" className="flex-1 bg-[#0D1B2A] text-white py-5 rounded-2xl font-heading font-black uppercase tracking-widest text-xs shadow-2xl hover:bg-[#00C896] hover:text-[#0D1B2A] transition-all border-none cursor-pointer">
-                    {editProduct ? 'Commit Changes' : 'Execute Release'}
+                <div className="pt-10 flex gap-6">
+                  <button type="submit" className="flex-1 bg-primary text-white py-6 rounded-full font-heading font-black uppercase tracking-[0.3em] text-xs shadow-2xl hover:bg-accent transition-all active:scale-95 flex items-center justify-center gap-3">
+                    <ShieldCheck size={20} /> {editProduct ? 'Commit Changes' : 'Execute Harvest'}
                   </button>
-                  <button type="button" onClick={() => setShowModal(false)} className="px-10 font-heading font-black text-[10px] uppercase tracking-widest text-gray-300 hover:text-red-500 transition-colors">Abort</button>
+                  <button type="button" onClick={() => setShowModal(false)} className="px-10 font-heading font-black text-[11px] uppercase tracking-[0.3em] text-stone-300 hover:text-berry transition-colors">Abort</button>
                 </div>
               </form>
             </motion.div>
@@ -295,3 +302,4 @@ const AdminProducts = () => {
 };
 
 export default AdminProducts;
+
