@@ -13,6 +13,8 @@ const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
   const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
@@ -22,6 +24,15 @@ const AdminProducts = () => {
   const [formData, setFormData] = useState({
     name: '', category: 'Vegetables', price: '', stock: '', image_url: '', description: ''
   });
+
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+      setPage(1);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   useEffect(() => {
     const fetchCats = async () => {
@@ -51,14 +62,33 @@ const AdminProducts = () => {
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await productsApi.list(page);
+      const res = await productsApi.list(page, filterCategory, 'created_at', debouncedSearch);
       if (res.success) setProducts(res.data || []);
     } catch (err) {
       console.error('Failed to fetch products:', err);
     } finally {
       setLoading(false);
     }
-  }, [page]);
+  }, [page, filterCategory, debouncedSearch]);
+
+  const handleExport = async () => {
+    try {
+      const res = await productsApi.list(1, filterCategory, 'created_at', debouncedSearch, 1000);
+      if (res.success) {
+        const data = res.data;
+        const csvContent = "data:text/csv;charset=utf-8," 
+          + "ID,Name,Category,Price,Stock\n"
+          + data.map(p => `${p.id},${p.name},${p.category},${p.price},${p.stock}`).join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `harvest_catalog_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    } catch (err) { alert('Export failed: ' + err.message); }
+  };
 
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
@@ -120,10 +150,21 @@ const AdminProducts = () => {
           />
         </div>
         <div className="flex gap-4">
-          <button className="flex items-center gap-4 px-10 bg-primary text-white rounded-[1.5rem] font-heading font-black uppercase tracking-widest text-xs hover:bg-accent transition-all shadow-xl active:scale-95">
-            <Filter size={18} /> Filter
-          </button>
-          <button className="flex items-center gap-4 px-10 bg-white border-4 border-stone-50 text-stone/30 rounded-[1.5rem] font-heading font-black uppercase tracking-widest text-xs hover:border-accent/30 hover:text-accent transition-all shadow-lg active:scale-95">
+          <div className="relative">
+            <Filter size={18} className="absolute left-6 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
+            <select 
+              value={filterCategory} 
+              onChange={(e) => { setFilterCategory(e.target.value); setPage(1); }}
+              className="appearance-none bg-primary text-white pl-14 pr-10 py-6 rounded-[1.5rem] font-heading font-black uppercase tracking-widest text-xs hover:bg-accent transition-all shadow-xl active:scale-95 outline-none cursor-pointer border-none"
+            >
+              <option value="">All Taxonomy</option>
+              {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
+            </select>
+          </div>
+          <button 
+            onClick={handleExport}
+            className="flex items-center gap-4 px-10 bg-white border-4 border-stone-50 text-stone/30 rounded-[1.5rem] font-heading font-black uppercase tracking-widest text-xs hover:border-accent/30 hover:text-accent transition-all shadow-lg active:scale-95"
+          >
             Export <Leaf size={18} className="text-accent" />
           </button>
         </div>

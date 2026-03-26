@@ -28,9 +28,10 @@ const publicLimiter = rateLimit({
 router.get('/', publicLimiter, async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page) || 1);
-    const limit = 12;
+    const limit = parseInt(req.query.limit) || 12;
     const offset = (page - 1) * limit;
     const category = req.query.category;
+    const search = req.query.search;
     const sort = req.query.sort || 'created_at';
     let order = req.query.order === 'asc' ? true : false;
     
@@ -42,11 +43,14 @@ router.get('/', publicLimiter, async (req, res) => {
 
     let query = supabase
       .from('products')
-      .select('*', { count: 'exact' })
-      .range(offset, offset + limit - 1)
-      .order(sort, { ascending: order });
+      .select('*', { count: 'exact' });
 
     if (category) query = query.eq('category', category);
+    if (search) query = query.ilike('name', `%${search}%`);
+
+    query = query
+      .range(offset, offset + limit - 1)
+      .order(sort, { ascending: order });
 
     const { data, error, count } = await query;
     if (error) throw error;

@@ -27,8 +27,8 @@ export const authApi = {
 
 // ─── Products ──────────────────────────────────────────────────────────────────
 export const productsApi = {
-  list: (page = 1, category = '', sort = 'created_at') =>
-    request(`/api/products?page=${page}&category=${category}&sort=${sort}`),
+  list: (page = 1, category = '', sort = 'created_at', search = '', limit = 12) =>
+    request(`/api/products?page=${page}&category=${category}&sort=${sort}&search=${search}&limit=${limit}`),
   get: (id) => request(`/api/products/${id}`),
   search: (q) => request(`/api/products/search?q=${encodeURIComponent(q)}`),
   create: (body) => request('/api/products', { method: 'POST', body: JSON.stringify(body) }),
