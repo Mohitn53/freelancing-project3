@@ -16,12 +16,12 @@ const FEATURES = [
 ];
 
 const GROCERY_CATEGORIES = [
-  { label: 'Vegetables', emoji: '🥦', img: 'https://images.unsplash.com/photo-1566385101042-1a000c1267c4?q=80&w=400&auto=format&fit=crop' },
-  { label: 'Fruits', emoji: '🍎', img: 'https://images.unsplash.com/photo-1619566639371-5909d59739a1?q=80&w=400&auto=format&fit=crop' },
-  { label: 'Dairy', emoji: '🥛', img: 'https://images.unsplash.com/photo-1550583724-125581cc25fb?q=80&w=400&auto=format&fit=crop' },
-  { label: 'Bakery', emoji: '🍞', img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400&auto=format&fit=crop' },
-  { label: 'Meat', emoji: '🥩', img: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?q=80&w=400&auto=format&fit=crop' },
-  { label: 'Pantry', emoji: '🍯', img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=400&auto=format&fit=crop' },
+  { label: 'Vegetables', emoji: '🥦', img: 'https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { label: 'Fruits', emoji: '🍎', img: 'https://images.pexels.com/photos/1132047/pexels-photo-1132047.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { label: 'Dairy', emoji: '🥛', img: 'https://images.pexels.com/photos/248412/pexels-photo-248412.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { label: 'Bakery', emoji: '🍞', img: 'https://images.pexels.com/photos/209206/pexels-photo-209206.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { label: 'Meat', emoji: '🥩', img: 'https://images.pexels.com/photos/618491/pexels-photo-618491.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { label: 'Pantry', emoji: '🍯', img: 'https://images.pexels.com/photos/3338497/pexels-photo-3338497.jpeg?auto=compress&cs=tinysrgb&w=800' },
 ];
 
 const HomePage = () => {

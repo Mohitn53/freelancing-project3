@@ -43,7 +43,7 @@ async function seed() {
       price: 120.00,
       category: 'Vegetables',
       stock: 50,
-      image_url: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?q=80&w=800&auto=format&fit=crop'
+      image_url: 'https://images.unsplash.com/photo-1590779033100-9f6050a2f3f9?q=80&w=800&auto=format&fit=crop'
     },
     {
       name: 'Fresh Spinach (250g)',
@@ -59,7 +59,7 @@ async function seed() {
       price: 299.00,
       category: 'Fruits',
       stock: 20,
-      image_url: 'https://images.unsplash.com/photo-1523049673857-eb18f1d7b56d?q=80&w=800&auto=format&fit=crop'
+      image_url: 'https://images.unsplash.com/photo-1519162808019-7de1683fa2ad?q=80&w=800&auto=format&fit=crop'
     },
     {
       name: 'Sweet Alphonso Mangoes',
@@ -75,7 +75,7 @@ async function seed() {
       price: 180.00,
       category: 'Bakery',
       stock: 10,
-      image_url: 'https://images.unsplash.com/photo-1585478259715-876acc5be8eb?q=80&w=800&auto=format&fit=crop'
+      image_url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=800&auto=format&fit=crop'
     },
     {
       name: 'Farm Fresh Large Eggs (12)',
@@ -83,7 +83,7 @@ async function seed() {
       price: 110.00,
       category: 'Dairy & Eggs',
       stock: 40,
-      image_url: 'https://images.unsplash.com/photo-1506976785307-8732e854ad03?q=80&w=800&auto=format&fit=crop'
+      image_url: 'https://images.unsplash.com/photo-1569288052389-dac9902619a3?q=80&w=800&auto=format&fit=crop'
     },
     {
       name: 'Organic Whole Milk (1L)',
@@ -91,7 +91,7 @@ async function seed() {
       price: 75.00,
       category: 'Dairy & Eggs',
       stock: 25,
-      image_url: 'https://images.unsplash.com/photo-1550583724-125581cc25fb?q=80&w=800&auto=format&fit=crop'
+      image_url: 'https://images.unsplash.com/photo-1563636619-e910ef2a844b?q=80&w=800&auto=format&fit=crop'
     },
     {
       name: 'Atlantic Salmon Fillet',
