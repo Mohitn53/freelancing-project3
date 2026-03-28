@@ -17,6 +17,23 @@ const CheckoutPage = () => {
   const [placingOrder, setPlacingOrder] = useState(false);
   const [orderError, setOrderError] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('card');
+  const [formData, setFormData] = useState({
+    name: user?.name || '',
+    email: user?.email || '',
+    address: '',
+    city: '',
+    pincode: ''
+  });
+
+  React.useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        name: prev.name || user.name || '',
+        email: prev.email || user.email || ''
+      }));
+    }
+  }, [user]);
 
   const subtotal = cartItems.reduce((acc, item) => acc + (item.product?.price || 0) * item.quantity, 0);
   const processingFee = subtotal * 0.05;
@@ -24,6 +41,12 @@ const CheckoutPage = () => {
 
   const handlePlaceOrder = async () => {
     if (!cartItems.length) return;
+
+    // Address validation
+    if (!formData.name || !formData.email || !formData.address || !formData.city || !formData.pincode) {
+      setOrderError('Incomplete Logistics: Please provide a full destination address.');
+      return;
+    }
 
     setPlacingOrder(true);
     setOrderError('');
@@ -46,6 +69,7 @@ const CheckoutPage = () => {
         items,
         total_amount: total,
         payment_method: paymentMethod,
+        shipping_details: formData // Passing details for potential future backend use
       });
 
       setPlaced(true);
@@ -115,28 +139,28 @@ const CheckoutPage = () => {
                  <label className="flex items-center gap-2 text-[10px] font-heading font-black uppercase tracking-widest text-stone pl-2">
                     <User size={12} className="text-accent" /> Recipient Name
                  </label>
-                 <input type="text" placeholder="Your full name" defaultValue={user?.name} className="w-full bg-accent-light/10 border-2 border-transparent focus:border-accent/30 rounded-2xl px-6 py-5 font-sans text-sm font-bold outline-none transition-all shadow-inner" />
+                 <input type="text" placeholder="Your full name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="w-full bg-accent-light/10 border-2 border-transparent focus:border-accent/30 rounded-2xl px-6 py-5 font-sans text-sm font-bold outline-none transition-all shadow-inner" />
                </div>
                <div className="flex flex-col gap-3">
                  <label className="flex items-center gap-2 text-[10px] font-heading font-black uppercase tracking-widest text-stone pl-2">
                     <Mail size={12} className="text-accent" /> Email ID
                  </label>
-                 <input type="email" placeholder="Email for updates" defaultValue={user?.email} className="w-full bg-accent-light/10 border-2 border-transparent focus:border-accent/30 rounded-2xl px-6 py-5 font-sans text-sm font-bold outline-none transition-all shadow-inner" />
+                 <input type="email" placeholder="Email for updates" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="w-full bg-accent-light/10 border-2 border-transparent focus:border-accent/30 rounded-2xl px-6 py-5 font-sans text-sm font-bold outline-none transition-all shadow-inner" />
                </div>
                <div className="flex flex-col gap-3 md:col-span-2">
                  <label className="flex items-center gap-2 text-[10px] font-heading font-black uppercase tracking-widest text-stone pl-2">
                     <MapPin size={12} className="text-accent" /> Destination Address
                  </label>
-                 <input type="text" placeholder="Full door/street address" className="w-full bg-accent-light/10 border-2 border-transparent focus:border-accent/30 rounded-2xl px-6 py-5 font-sans text-sm font-bold outline-none transition-all shadow-inner" />
+                 <input type="text" placeholder="Full door/street address" value={formData.address} onChange={(e) => setFormData({...formData, address: e.target.value})} className="w-full bg-accent-light/10 border-2 border-transparent focus:border-accent/30 rounded-2xl px-6 py-5 font-sans text-sm font-bold outline-none transition-all shadow-inner" />
                </div>
                <div className="grid grid-cols-2 gap-6 md:col-span-2">
                  <div className="flex flex-col gap-3">
                    <label className="text-[10px] font-heading font-black uppercase tracking-widest text-stone pl-2">Harvest Zone (City)</label>
-                   <input type="text" placeholder="City" className="w-full bg-accent-light/10 border-2 border-transparent focus:border-accent/30 rounded-2xl px-6 py-5 font-sans text-sm font-bold outline-none transition-all shadow-inner" />
+                   <input type="text" placeholder="City" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})} className="w-full bg-accent-light/10 border-2 border-transparent focus:border-accent/30 rounded-2xl px-6 py-5 font-sans text-sm font-bold outline-none transition-all shadow-inner" />
                  </div>
                  <div className="flex flex-col gap-3">
                    <label className="text-[10px] font-heading font-black uppercase tracking-widest text-stone pl-2">Postal Tag</label>
-                   <input type="text" placeholder="Pincode" className="w-full bg-accent-light/10 border-2 border-transparent focus:border-accent/30 rounded-2xl px-6 py-5 font-sans text-sm font-bold outline-none transition-all shadow-inner" />
+                   <input type="text" placeholder="Pincode" value={formData.pincode} onChange={(e) => setFormData({...formData, pincode: e.target.value})} className="w-full bg-accent-light/10 border-2 border-transparent focus:border-accent/30 rounded-2xl px-6 py-5 font-sans text-sm font-bold outline-none transition-all shadow-inner" />
                  </div>
                </div>
             </div>
